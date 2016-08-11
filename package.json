@@ -4,7 +4,8 @@
   "description": "Seed for express-swagger-mongo",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node index.js",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -20,6 +21,7 @@
     "express": "^4.14.0"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "mocha": "^3.0.2"
   }
 }
