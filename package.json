@@ -1,0 +1,25 @@
+{
+  "name": "esm-seed",
+  "version": "0.0.1",
+  "description": "Seed for express-swagger-mongo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/divanvisagie/esm-seed.git"
+  },
+  "author": "Divan Visagie",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/divanvisagie/esm-seed/issues"
+  },
+  "homepage": "https://github.com/divanvisagie/esm-seed#readme",
+  "dependencies": {
+    "express": "^4.14.0"
+  },
+  "devDependencies": {
+    "mocha": "^3.0.2"
+  }
+}
