@@ -1,10 +1,12 @@
 'use strict'
 
 const express = require('express')
+const enrouten = require('express-enrouten')
+
 let app = express()
 
-app.get('/', (req, res) => {
-  res.send('hello world')
-})
+app.use(enrouten({
+  directory: 'routes'
+}))
 
 app.listen(8080)

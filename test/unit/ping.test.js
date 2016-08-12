@@ -1,6 +1,6 @@
 /* global describe, it */
 'use strict'
-const PingService = require('../src/ping-service')
+const PingService = require('../../src/ping-service')
 require('chai').should()
 
 describe('Ping service', () => {

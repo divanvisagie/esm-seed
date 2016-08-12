@@ -4,8 +4,8 @@
   "description": "Seed for express-swagger-mongo",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "mocha"
+    "start": "nodemon index.js",
+    "test": "mocha test/routes/*.test.js test/unit/*.test.js --reporter nyan"
   },
   "repository": {
     "type": "git",
@@ -18,13 +18,19 @@
   },
   "homepage": "https://github.com/divanvisagie/esm-seed#readme",
   "dependencies": {
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "express-enrouten": "^1.3.0"
   },
   "devDependencies": {
     "chai": "^3.5.0",
-    "mocha": "^3.0.2"
+    "mocha": "^3.0.2",
+    "nodemon": "^1.10.0",
+    "supertest": "^2.0.0"
   },
   "standard": {
-    "globals": [ "myVar1", "myVar2" ]
+    "globals": [
+      "myVar1",
+      "myVar2"
+    ]
   }
 }
