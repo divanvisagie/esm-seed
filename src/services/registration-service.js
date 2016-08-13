@@ -1,7 +1,7 @@
 function RegistrationService (userRepository) {
   return {
-    registerUser (user) {
-      userRepository.createUser(user)
+    registerUser (user, callback) {
+      userRepository.createUser(user, callback)
     }
   }
 }

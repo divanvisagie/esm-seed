@@ -11,14 +11,15 @@ const registrationService = RegistrationService(mockRepository)
 
 module.exports = router => {
   router.post('/register', (req, res) => {
+    console.log('register user')
     registrationService.registerUser(null, (err, data) => {
       if (err) {
         return res.send({
-          message: 'user creation failed'
+          message: 'user registration failed'
         })
       }
       res.send({
-        message: 'user created'
+        message: 'user registered'
       })
     })
   })
