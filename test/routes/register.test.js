@@ -7,7 +7,7 @@ const supertest = require('supertest')
 const enrouten = require('express-enrouten')
 const UserRepository = require('../../src/repositories/user-repository')
 const RegistrationService = require('../../src/services/registration-service')
-const { container } = require('../../src/container')
+const container = require('../../src/container')
 
 const mockRepository = {
   createUser (user, callback) {

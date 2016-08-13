@@ -1,7 +1,7 @@
 /* global describe, it, beforeEach */
 'use strict'
 require('chai').should()
-const { container, DependenciesNotFoundException } = require('../../src/container')
+const container = require('../../src/container')
 
 function Test () {
   return {

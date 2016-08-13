@@ -2,13 +2,6 @@
 
 const upperCamelCase = require('uppercamelcase')
 
-function AlreadyInitializedException (name) {
-  return {
-    message: `container already contains an instance of ${name}`,
-    name: 'AlreadyInitializedException'
-  }
-}
-
 const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
 const ARGUMENT_NAMES = /([^\s,]+)/g
 function getParamNames (func) {
@@ -62,7 +55,4 @@ function Container () {
   }
 }
 
-module.exports = {
-  container: Container(),
-  AlreadyInitializedException
-}
+module.exports = Container()
