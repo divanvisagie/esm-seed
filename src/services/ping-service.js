@@ -2,8 +2,10 @@
 
 function PingService () {
   return {
-    custom (message) {
-      return `Ping: ${message}`
+    get () {
+      return {
+        ping: 'pong'
+      }
     }
   }
 }

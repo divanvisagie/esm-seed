@@ -14,7 +14,7 @@ describe(`ping`, () => {
     app = express()
     app.on('start', done)
     app.use(enrouten({
-      directory: '../../routes'
+      directory: '../../src/routes'
     }))
     mock = app.listen('1337')
 
