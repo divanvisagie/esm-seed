@@ -6,6 +6,7 @@ const express = require('express')
 const supertest = require('supertest')
 const enrouten = require('express-enrouten')
 const UserRepository = require('../../src/repositories/user-repository')
+const RegistrationService = require('../../src/services/registration-service')
 const { container } = require('../../src/container')
 
 const mockRepository = {
@@ -22,6 +23,7 @@ describe(`ping`, () => {
     app = express()
     app.on('start', done)
     container.add(UserRepository, () => mockRepository)
+    container.add(RegistrationService)
     app.use(enrouten({
       directory: '../../src/routes'
     }))

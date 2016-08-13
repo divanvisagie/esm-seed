@@ -30,18 +30,38 @@ describe('app container', () => {
     container.add(Test)
     container.add(DependantOnTest)
     let testInstance = container.resolve(DependantOnTest)
-    console.log(testInstance)
     testInstance.should.not.equal(undefined)
+  })
+
+  describe(`when adding the same instance twice`, () => {
+    it(`should throw Error`, () => {
+      (() => {
+        container.add(Test)
+        container.add(Test)
+      }).should.Throw(Error)
+    })
   })
 
   describe(`given no dependencies for DependantOnTest`, () => {
     it(`should throw exception`, () => {
-
-      //let testInstance =
-      (function () {
+      (() => {
         container.add(DependantOnTest)
         container.resolve(DependantOnTest)
-      }).should.Throw(DependenciesNotFoundException)
+      }).should.Throw(Error)
+    })
+  })
+
+  describe('given custom builder for test', () => {
+    it(`should be able to resolve instance`, () => {
+      container.add(Test, () => {
+        return {
+          test () {
+            console.log('test')
+          }
+        }
+      })
+      let testInstance = container.resolve(Test)
+      testInstance.should.not.equal(undefined)
     })
   })
 })

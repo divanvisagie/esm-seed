@@ -9,7 +9,6 @@ function AlreadyInitializedException (name) {
   }
 }
 
-
 const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
 const ARGUMENT_NAMES = /([^\s,]+)/g
 function getParamNames (func) {
@@ -43,20 +42,18 @@ function Container () {
     },
 
     add (classType, builder) {
-      console.log(`add ${classType.name} to `, container)
       if (container[classType.name]) {
-        throw new AlreadyInitializedException(classType.name)
+        throw new Error(`already created instance of ${classType.name}`)
       }
 
-      if (!builder) {
+      if (builder) {
+        container[classType.name] = builder()
+      } else {
         const parameterNames = getParamNames(classType)
         const instances = getInstances(parameterNames)
 
         container[classType.name] = classType.apply(this, instances)
-        return
       }
-
-      container[classType.name] = builder()
     },
 
     destroy () {
