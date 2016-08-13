@@ -5,12 +5,11 @@
 const express = require('express')
 const supertest = require('supertest')
 const enrouten = require('express-enrouten')
-const UserRepository = require('../../src/repositories/user-repository')
 const RegistrationService = require('../../src/services/registration-service')
 const container = require('../../src/container')
 
-const mockRepository = {
-  createUser (user, callback) {
+const mockRegistrationService = {
+  registerUser (user, callback) {
     callback(null, 'mock')
   }
 }
@@ -22,8 +21,7 @@ describe(`register`, () => {
   beforeEach(done => {
     app = express()
     app.on('start', done)
-    container.add(UserRepository, () => mockRepository)
-    container.add(RegistrationService)
+    container.add(RegistrationService, () => mockRegistrationService)
     app.use(enrouten({
       directory: '../../src/routes'
     }))

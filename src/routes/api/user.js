@@ -28,7 +28,7 @@ module.exports = router => {
     loginService.login(user, (err, data) => {
       if (err) {
         return res.send({
-          message: 'user registration failed'
+          message: `user login failed ${err}`
         })
       }
       res.send(data)
