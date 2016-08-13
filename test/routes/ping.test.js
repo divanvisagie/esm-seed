@@ -27,9 +27,9 @@ describe(`ping`, () => {
     done()
   })
 
-  describe(`given a get to /ping`, () => {
+  describe(`given a get to /api/ping`, () => {
     it(`should return pong`, done => {
-      api.get('/ping')
+      api.get('/api/ping')
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
