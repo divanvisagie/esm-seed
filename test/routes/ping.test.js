@@ -3,28 +3,42 @@
 'use strict'
 
 const express = require('express')
-const request = require('supertest')
+const supertest = require('supertest')
+const enrouten = require('express-enrouten')
 
 describe(`ping`, () => {
-  let app, mock
+  let app, api, mock
+  const url = 'http://localhost:1337'
 
   beforeEach(done => {
     app = express()
     app.on('start', done)
-    mock = app.listen(1337)
+    app.use(enrouten({
+      directory: '../../routes'
+    }))
+    mock = app.listen('1337')
+
+    api = supertest(url)
+    done()
   })
 
   afterEach(done => {
-    mock.close(done)
+    mock.close()
+    done()
   })
 
-  it(`should return pong`, done => {
-    request(mock)
-      .get('ping')
-      .expect(200)
-      .expect(/pong/)
-      .end((err, res) => {
-        done(err)
-      })
+  describe(`given a get to /ping`, () => {
+    it(`should return pong`, done => {
+      api.get('/ping')
+        .expect(200)
+        .expect('Content-Type', /html/)
+        .expect(/pong/)
+        .end((err, res) => {
+          if (err) {
+            throw err
+          }
+          done()
+        })
+    })
   })
 })
