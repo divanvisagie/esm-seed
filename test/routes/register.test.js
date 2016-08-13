@@ -5,6 +5,15 @@
 const express = require('express')
 const supertest = require('supertest')
 const enrouten = require('express-enrouten')
+const UserRepository = require('../../src/repositories/user-repository')
+const RegistrationService = require('../../src/services/registration-service')
+const { container } = require('../../src/container')
+
+const mockRepository = {
+  createUser (user, callback) {
+    callback(null, 'mock')
+  }
+}
 
 describe(`ping`, () => {
   let app, api, mock
@@ -13,6 +22,8 @@ describe(`ping`, () => {
   beforeEach(done => {
     app = express()
     app.on('start', done)
+    container.add(UserRepository, () => mockRepository)
+    container.add(RegistrationService)
     app.use(enrouten({
       directory: '../../src/routes'
     }))
@@ -23,13 +34,19 @@ describe(`ping`, () => {
   })
 
   afterEach(done => {
+    container.destroy()
     mock.close()
     done()
   })
 
-  describe(`given a get to /api/ping`, () => {
-    it(`should return pong`, done => {
-      api.get('/api/ping')
+  describe(`given a get to /api/user/register`, () => {
+    it(`should return success message`, done => {
+      api.post('/api/user/register')
+        .send({
+          username: 'bob',
+          email: 'bob@burgers.com',
+          password: 'm@gn3t5'
+        })
         .expect(200)
         .expect('Content-Type', /json/)
         .end((err, res) => {
@@ -37,7 +54,7 @@ describe(`ping`, () => {
             throw err
           }
           res.body.should.deep.equal({
-            ping: 'pong'
+            message: 'user registered'
           })
           done()
         })
