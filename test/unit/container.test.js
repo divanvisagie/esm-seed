@@ -1,10 +1,9 @@
-/* global describe, it */
+/* global describe, it, beforeEach */
 'use strict'
-const PingService = require('../../src/services/ping-service')
 require('chai').should()
-const container = require('../../src/container')
+const { container, DependenciesNotFoundException } = require('../../src/container')
 
-function Test() {
+function Test () {
   return {
     test () {
       console.log('test')
@@ -12,7 +11,7 @@ function Test() {
   }
 }
 
-function DependantOnTest(test) {
+function DependantOnTest (test) {
   return {}
 }
 
@@ -27,10 +26,22 @@ describe('app container', () => {
     testInstance.should.not.equal(undefined)
   })
 
-  it(`should be able to resolve DependantOnTest() if Test is added furst`, () => {
+  it(`should be able to resolve DependantOnTest() if Test is added first`, () => {
     container.add(Test)
     container.add(DependantOnTest)
     let testInstance = container.resolve(DependantOnTest)
+    console.log(testInstance)
     testInstance.should.not.equal(undefined)
+  })
+
+  describe(`given no dependencies for DependantOnTest`, () => {
+    it(`should throw exception`, () => {
+
+      //let testInstance =
+      (function () {
+        container.add(DependantOnTest)
+        container.resolve(DependantOnTest)
+      }).should.Throw(DependenciesNotFoundException)
+    })
   })
 })

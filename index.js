@@ -3,7 +3,7 @@
 const express = require('express')
 const enrouten = require('express-enrouten')
 const path = require('path')
-const container = require('./src/container')
+const container = require('./src/container').container
 const UserRepository = require('./src/repositories/user-repository')
 
 const mockRepository = {

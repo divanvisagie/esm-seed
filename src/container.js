@@ -1,5 +1,6 @@
 'use strict'
-let container = {}
+
+const upperCamelCase = require('uppercamelcase')
 
 function AlreadyInitializedException (name) {
   return {
@@ -7,6 +8,7 @@ function AlreadyInitializedException (name) {
     name: 'AlreadyInitializedException'
   }
 }
+
 
 const STRIP_COMMENTS = /((\/\/.*$)|(\/\*[\s\S]*?\*\/))/mg
 const ARGUMENT_NAMES = /([^\s,]+)/g
@@ -19,36 +21,51 @@ function getParamNames (func) {
   return result
 }
 
-function camelize (str) {
-  return str.replace(/(?:^\w|[A-Z]|\b\w)/g, function (letter, index) {
-    return index === 0 ? letter.toLowerCase() : letter.toUpperCase()
-  }).replace(/\s+/g, '')
+function Container () {
+  let container = {}
+
+  function getInstances (parameters) {
+    return parameters.map(paramName => {
+      const key = upperCamelCase(paramName)
+      let instance = container[key]
+      if (!instance) {
+        const containerString = JSON.stringify(container)
+        throw new Error(`could not find an instance of
+          ${key} in ${containerString}`)
+      }
+      return instance
+    })
+  }
+
+  return {
+    resolve (classType) {
+      return container[classType.name]
+    },
+
+    add (classType, builder) {
+      console.log(`add ${classType.name} to `, container)
+      if (container[classType.name]) {
+        throw new AlreadyInitializedException(classType.name)
+      }
+
+      if (!builder) {
+        const parameterNames = getParamNames(classType)
+        const instances = getInstances(parameterNames)
+
+        container[classType.name] = classType.apply(this, instances)
+        return
+      }
+
+      container[classType.name] = builder()
+    },
+
+    destroy () {
+      container = {}
+    }
+  }
 }
 
 module.exports = {
-  resolve (classType) {
-    return container[classType.name]
-  },
-
-  add (classType, builder) {
-    if (container[classType.name]) {
-      throw new AlreadyInitializedException(classType.name)
-    }
-
-    if (!builder) {
-      const parameterNames = getParamNames(classType)
-      const instances = parameterNames.map(paramName => {
-        return container[camelize(paramName)]
-      })
-      console.log('instances', instances)
-      container[classType.name] = classType.apply(this, instances)
-      return
-    }
-
-    container[classType.name] = classType()
-  },
-
-  destroy () {
-    container = {}
-  }
+  container: Container(),
+  AlreadyInitializedException
 }

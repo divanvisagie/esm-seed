@@ -1,7 +1,7 @@
 'use strict'
 
 const UserRepository = require('../../repositories/user-repository')
-const container = require('../../container')
+const { container } = require('../../container')
 const RegistrationService = require('../../services/registration-service')
 const registrationService = RegistrationService(
   container.resolve(UserRepository)
