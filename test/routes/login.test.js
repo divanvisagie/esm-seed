@@ -5,13 +5,14 @@
 const express = require('express')
 const supertest = require('supertest')
 const enrouten = require('express-enrouten')
-const UserRepository = require('../../src/repositories/user-repository')
 const LoginService = require('../../src/services/login-service')
 const container = require('../../src/container')
 
-const mockRepository = {
-  createUser (user, callback) {
-    callback(null, 'mock')
+const mockLoginService = {
+  login (user, callback) {
+    callback(null, {
+      token: 'my-fake-token'
+    })
   }
 }
 
@@ -22,8 +23,7 @@ describe(`login`, () => {
   beforeEach(done => {
     app = express()
     app.on('start', done)
-    container.add(UserRepository, () => mockRepository)
-    container.add(LoginService)
+    container.add(LoginService, () => mockLoginService)
     app.use(enrouten({
       directory: '../../src/routes'
     }))
@@ -40,7 +40,7 @@ describe(`login`, () => {
   })
 
   describe(`given a get to /api/user/login`, () => {
-    it(`should return success message`, done => {
+    it(`should return token`, done => {
       api.post('/api/user/login')
         .send({
           username: 'bob',

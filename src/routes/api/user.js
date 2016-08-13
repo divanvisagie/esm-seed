@@ -9,7 +9,9 @@ module.exports = router => {
   const loginService = container.resolve(LoginService)
 
   router.post('/register', (req, res) => {
-    registrationService.registerUser(null, (err, data) => {
+    const user = req.body
+    console.log(user)
+    registrationService.registerUser(user, (err, data) => {
       if (err) {
         return res.send({
           message: 'user registration failed'
@@ -22,6 +24,14 @@ module.exports = router => {
   })
 
   router.post('/login', (req, res) => {
-    res.send({token: ''})
+    const user = req.body
+    loginService.login(user, (err, data) => {
+      if (err) {
+        return res.send({
+          message: 'user registration failed'
+        })
+      }
+      res.send(data)
+    })
   })
 }
