@@ -3,7 +3,9 @@
 const express = require('express')
 const enrouten = require('express-enrouten')
 const path = require('path')
-const container = require('./src/container').container
+
+const MongooseConfig = require('./src/mongoose-config')
+const container = require('./src/container')
 const UserRepository = require('./src/repositories/user-repository')
 
 const mockRepository = {
@@ -14,7 +16,8 @@ const mockRepository = {
 
 let app = express()
 
-container.add(UserRepository, () => mockRepository)
+container.add(MongooseConfig)
+container.add(UserRepository)
 
 app.use(express.static(path.join(__dirname, 'public')))
 

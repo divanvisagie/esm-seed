@@ -1,4 +1,5 @@
-function UserRepository (mongoose) {
+function UserRepository (mongooseConfig) {
+  let mongoose = mongooseConfig.get()
   let User = mongoose.model('User', User)
 
   return {
@@ -12,6 +13,10 @@ function UserRepository (mongoose) {
           callback(undefined, 'success')
         }
       })
+    },
+
+    findUserByUsername (user, callback) {
+      
     }
   }
 }
