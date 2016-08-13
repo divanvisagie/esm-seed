@@ -1,13 +1,11 @@
 'use strict'
 
-const mockRepository = {
-  createUser (user, callback) {
-    callback(null, 'mock')
-  }
-}
-
+const UserRepository = require('../../repositories/user-repository')
+const container = require('../../container')
 const RegistrationService = require('../../services/registration-service')
-const registrationService = RegistrationService(mockRepository)
+const registrationService = RegistrationService(
+  container.resolve(UserRepository)
+)
 
 module.exports = router => {
   router.post('/register', (req, res) => {
