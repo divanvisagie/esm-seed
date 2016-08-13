@@ -5,23 +5,25 @@
 const express = require('express')
 const supertest = require('supertest')
 const enrouten = require('express-enrouten')
-const RegistrationService = require('../../src/services/registration-service')
+const LoginService = require('../../src/services/login-service')
 const container = require('../../src/container')
 
-const mockRegistrationService = {
-  registerUser (user, callback) {
-    callback(null, 'mock')
+const mockLoginService = {
+  login (user, callback) {
+    callback(null, {
+      token: 'my-fake-token'
+    })
   }
 }
 
-describe(`register`, () => {
+describe(`login`, () => {
   let app, api, mock
   const url = 'http://localhost:1337'
 
   beforeEach(done => {
     app = express()
     app.on('start', done)
-    container.add(RegistrationService, () => mockRegistrationService)
+    container.add(LoginService, () => mockLoginService)
     app.use(enrouten({
       directory: '../../src/routes'
     }))
@@ -37,12 +39,11 @@ describe(`register`, () => {
     done()
   })
 
-  describe(`given a get to /api/user/register`, () => {
-    it(`should return success message`, done => {
-      api.post('/api/user/register')
+  describe(`given a get to /api/user/login`, () => {
+    it(`should return token`, done => {
+      api.post('/api/user/login')
         .send({
           username: 'bob',
-          email: 'bob@burgers.com',
           password: 'm@gn3t5'
         })
         .expect(200)
@@ -51,9 +52,7 @@ describe(`register`, () => {
           if (err) {
             throw err
           }
-          res.body.should.deep.equal({
-            message: 'user registered'
-          })
+          res.body.should.have.property('token')
           done()
         })
     })

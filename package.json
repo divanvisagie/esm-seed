@@ -19,8 +19,11 @@
   },
   "homepage": "https://github.com/divanvisagie/esm-seed#readme",
   "dependencies": {
+    "body-parser": "^1.15.2",
+    "credential": "^1.0.0",
     "express": "^4.14.0",
     "express-enrouten": "^1.3.0",
+    "mongoose": "^4.5.8",
     "uppercamelcase": "^1.1.0"
   },
   "devDependencies": {
