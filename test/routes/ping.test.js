@@ -31,12 +31,13 @@ describe(`ping`, () => {
     it(`should return pong`, done => {
       api.get('/ping')
         .expect(200)
-        .expect('Content-Type', /html/)
-        .expect(/pong/)
+        .expect('Content-Type', /json/)
         .end((err, res) => {
           if (err) {
             throw err
           }
+          res.body.should.have.property('ping')
+          res.body.ping.should.equal('pong')
           done()
         })
     })
