@@ -36,8 +36,9 @@ describe(`ping`, () => {
           if (err) {
             throw err
           }
-          res.body.should.have.property('ping')
-          res.body.ping.should.equal('pong')
+          res.body.should.deep.equal({
+            ping: 'pong'
+          })
           done()
         })
     })
