@@ -4,6 +4,8 @@ const express = require('express')
 const bodyParser = require('body-parser')
 const enrouten = require('express-enrouten')
 const path = require('path')
+const expressWinston = require('express-winston')
+const winston = require('winston')
 
 const MongooseConfig = require('./src/mongoose-config')
 const container = require('./src/container')
@@ -19,6 +21,18 @@ container.add(LoginService)
 let app = express()
 
 app.use(bodyParser.json())
+app.use(expressWinston.logger({
+  transports: [
+    new winston.transports.Console({
+      json: true,
+      colorize: true
+    })
+  ],
+  meta: false,
+  msg: 'HTTP {{req.method}} {{req.url}} {{res.responseTime}}ms {{res.statusCode}}',
+  colorize: false
+}))
+
 app.use(express.static(path.join(__dirname, 'public')))
 app.use(enrouten({
   directory: 'src/routes'

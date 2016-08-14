@@ -1,5 +1,6 @@
 const credential = require('credential')
 const pw = credential()
+const winston = require('winston')
 
 function LoginService (userRepository) {
   return {
@@ -15,10 +16,9 @@ function LoginService (userRepository) {
           return callback(err)
         }
         const storedHash = data[0].password
-        console.log(`matching ${user.password} and ${storedHash}`)
         pw.verify(storedHash, user.password, function (err, isValid) {
           if (err) {
-            console.log('error!!!!')
+            winston.log('info', err)
             return callback(err)
           }
           if (isValid) {
@@ -27,6 +27,7 @@ function LoginService (userRepository) {
               valid: true
             })
           } else {
+            winston.log('info', 'invalid password')
             callback(undefined, { valid: false })
           }
         })
