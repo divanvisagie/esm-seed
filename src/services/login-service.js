@@ -1,8 +1,19 @@
 const credential = require('credential')
 const pw = credential()
 const winston = require('winston')
+const jwt = require('jsonwebtoken')
 
 function LoginService (userRepository) {
+  function generateTokenForUser (user) {
+    const secret = 'bad-secret-please-replace'
+    const cleanUser = {
+      username: user.username
+    }
+    return jwt.sign(cleanUser, secret, {
+      expiresIn: '2 days' // expires in 24 hours
+    })
+  }
+
   return {
     login (user, callback) {
       if (!user.username) {
@@ -23,7 +34,7 @@ function LoginService (userRepository) {
           }
           if (isValid) {
             callback(undefined, {
-              token: 'fake-token',
+              token: generateTokenForUser(data[0]),
               valid: true
             })
           } else {
