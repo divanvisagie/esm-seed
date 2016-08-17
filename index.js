@@ -7,7 +7,7 @@ const path = require('path')
 const expressWinston = require('express-winston')
 const winston = require('winston')
 
-const MongooseConfig = require('./src/mongoose-config')
+const MongooseConfig = require('./src/config/mongoose-config')
 const container = require('./src/container')
 const UserRepository = require('./src/repositories/user-repository')
 const RegistrationService = require('./src/services/registration-service')
