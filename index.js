@@ -8,13 +8,20 @@ const expressWinston = require('express-winston')
 const winston = require('winston')
 
 const MongooseConfig = require('./src/config/mongoose-config')
+const TokenConfig = require('./src/config/token-config')
 const container = require('./src/container')
 const UserRepository = require('./src/repositories/user-repository')
+
 const RegistrationService = require('./src/services/registration-service')
 const LoginService = require('./src/services/login-service')
+const TokenService = require('./src/services/token-service')
 
 container.add(MongooseConfig)
+container.add(TokenConfig)
+
 container.add(UserRepository)
+
+container.add(TokenService)
 container.add(RegistrationService)
 container.add(LoginService)
 
