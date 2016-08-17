@@ -2,7 +2,7 @@ const credential = require('credential')
 const pw = credential()
 const winston = require('winston')
 
-function LoginService (userRepository) {
+function LoginService (userRepository, tokenService) {
   return {
     login (user, callback) {
       if (!user.username) {
@@ -23,7 +23,7 @@ function LoginService (userRepository) {
           }
           if (isValid) {
             callback(undefined, {
-              token: 'fake-token',
+              token: tokenService.generateTokenForUser(data[0]),
               valid: true
             })
           } else {
