@@ -1,4 +1,6 @@
 'use strict'
+const winston = require('winston')
+
 function exclude (method, url) {
   return {
     method,
@@ -6,13 +8,17 @@ function exclude (method, url) {
   }
 }
 
-function config (options) {
+function config (tokenService, options) {
   const { whitelist } = options || {}
 
   function isWhitelistedRoute (req) {
-    return (whitelist || []).filter(x => {
-      return req.url.match(x.url)
-    }).find(x => x.method.toLowerCase() === req.method.toLowerCase())
+    return (whitelist || []).filter(x => req.url.match(x.url))
+      .find(x => x.method.toLowerCase() === req.method.toLowerCase())
+  }
+
+  function authFailure (res) {
+    winston.log('info', 'authorization failure')
+    res.status(401)
   }
 
   return (req, res, next) => {
@@ -20,9 +26,19 @@ function config (options) {
       return next()
     }
     if (req.headers && req.headers['x-access-token']) {
-      return next()
+      tokenService.payloadForToken(req.headers['x-access-token'], (err, data) => {
+        if (err) {
+          return authFailure(res)
+        }
+        if (data) {
+          req.user = data
+          return next()
+        }
+        return authFailure(res)
+      })
+    } else {
+      authFailure(res)
     }
-    res.status(401)
   }
 }
 

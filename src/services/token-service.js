@@ -12,6 +12,9 @@ function TokenService (tokenConfig) {
       return jwt.sign(cleanUser, secret, {
         expiresIn: expiry // expires in 24 hours
       })
+    },
+    payloadForToken (token) {
+      return undefined
     }
   }
 }

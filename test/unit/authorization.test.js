@@ -39,7 +39,12 @@ describe('authorization middleware constructor', () => {
           throw Error('should not be called in this case')
         }
       }
-      authorization.config()(mockRequest, responseMock, () => {
+      const mockTokenService = {
+        payloadForToken (token, callback) {
+          return callback(null, {})
+        }
+      }
+      authorization.config(mockTokenService)(mockRequest, responseMock, () => {
         done()
       })
     })
@@ -57,7 +62,12 @@ describe('authorization middleware constructor', () => {
           throw Error('should not be called in this case')
         }
       }
-      authorization.config({
+      const mockTokenService = {
+        payloadForToken (token, callback) {
+          return callback(undefined, {})
+        }
+      }
+      authorization.config(mockTokenService, {
         whitelist: [
           exclude('GET', '/api/user/login')
         ]
