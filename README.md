@@ -15,6 +15,7 @@ npm install
 
 ```bash
 npm test
+npm run test:watch
 ```
 
 ### Running
