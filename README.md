@@ -19,6 +19,7 @@ npm test
 
 ### Running
 ```bash
+docker-compose up
 npm run
 ```
 ## License

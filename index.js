@@ -7,6 +7,8 @@ const path = require('path')
 const expressWinston = require('express-winston')
 const winston = require('winston')
 
+const authorization = require('./src/middleware/authorization')
+
 const MongooseConfig = require('./src/config/mongoose-config')
 const TokenConfig = require('./src/config/token-config')
 const container = require('./src/container')
@@ -40,7 +42,9 @@ app.use(expressWinston.logger({
   colorize: false
 }))
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(authorization)
+
+app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(enrouten({
   directory: 'src/routes'
 }))
