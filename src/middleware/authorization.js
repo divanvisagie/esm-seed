@@ -10,11 +10,9 @@ function config (options) {
   const { whitelist } = options || {}
 
   function isWhitelistedRoute (req) {
-    if (!whitelist) return false
-    const whitelistItem = whitelist.filter(x => {
+    return (whitelist || []).filter(x => {
       return req.url.match(x.url)
     }).find(x => x.method.toLowerCase() === req.method.toLowerCase())
-    return whitelistItem
   }
 
   return (req, res, next) => {
