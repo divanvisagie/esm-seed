@@ -1,13 +1,13 @@
 /* global describe, it */
 'use strict'
 const authorization = require('../../src/middleware/authorization')
-
+const { exclude } = authorization
 const chai = require('chai')
 const spies = require('chai-spies')
 chai.use(spies)
 chai.should()
 
-describe('authorization middleware', () => {
+describe('authorization middleware constructor', () => {
   describe(`get /api/ping without x-access-token`, () => {
     function nextMock () {}
 
@@ -22,7 +22,7 @@ describe('authorization middleware', () => {
           done()
         }
       }
-      authorization(mockRequest, responseMock, nextMock)
+      authorization.config()(mockRequest, responseMock, nextMock)
     })
   })
 
@@ -39,7 +39,29 @@ describe('authorization middleware', () => {
           throw Error('should not be called in this case')
         }
       }
-      authorization(mockRequest, responseMock, () => {
+      authorization.config()(mockRequest, responseMock, () => {
+        done()
+      })
+    })
+  })
+
+  describe(`get /api/user/login without x-access-token with route excluded`, () => {
+    it(`should call next()`, done => {
+      const mockRequest = {
+        url: '/api/user/login',
+        method: 'GET',
+        headers: {}
+      }
+      const responseMock = {
+        status (statusCode) {
+          throw Error('should not be called in this case')
+        }
+      }
+      authorization.config({
+        whitelist: [
+          exclude('GET', '/api/user/login')
+        ]
+      })(mockRequest, responseMock, () => {
         done()
       })
     })

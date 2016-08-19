@@ -8,6 +8,7 @@ const expressWinston = require('express-winston')
 const winston = require('winston')
 
 const authorization = require('./src/middleware/authorization')
+const { exclude } = authorization
 
 const MongooseConfig = require('./src/config/mongoose-config')
 const TokenConfig = require('./src/config/token-config')
@@ -42,7 +43,12 @@ app.use(expressWinston.logger({
   colorize: false
 }))
 
-app.use(authorization)
+app.use(authorization.config({
+  whitelist: [
+    exclude('POST', '/api/user/login'),
+    exclude('POST', '/api/user/register')
+  ]
+}))
 
 app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(enrouten({
