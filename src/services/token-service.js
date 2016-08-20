@@ -10,7 +10,13 @@ function TokenService (tokenConfig) {
         username: user.username
       }
       return jwt.sign(cleanUser, secret, {
-        expiresIn: expiry // expires in 24 hours
+        expiresIn: expiry
+      })
+    },
+    payloadForToken (token, callback) {
+      jwt.verify(token, secret, (err, decoded) => {
+        console.log(decoded) // bar
+        return callback(err, decoded)
       })
     }
   }

@@ -41,4 +41,21 @@ describe('Token service', () => {
       splitList.length.should.equal(3)
     })
   })
+
+  describe('given token for bob', () => {
+    it('should deserialize to { bob }', done => {
+      const tokenService = container.resolve(TokenService)
+      const user = {
+        username: 'bob'
+      }
+      const token = tokenService.generateTokenForUser(user)
+      tokenService.payloadForToken(token, (err, data) => {
+        if (err) {
+          throw err
+        }
+        data.username.should.equal('bob')
+        done()
+      })
+    })
+  })
 })

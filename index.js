@@ -7,6 +7,9 @@ const path = require('path')
 const expressWinston = require('express-winston')
 const winston = require('winston')
 
+const authorization = require('./src/middleware/authorization')
+const { exclude } = authorization
+
 const MongooseConfig = require('./src/config/mongoose-config')
 const TokenConfig = require('./src/config/token-config')
 const container = require('./src/container')
@@ -35,12 +38,19 @@ app.use(expressWinston.logger({
       colorize: true
     })
   ],
-  meta: false,
-  msg: 'HTTP {{req.method}} {{req.url}} {{res.responseTime}}ms {{res.statusCode}}',
+  meta: true,
+  msg: 'HTTP {{req.method}} {{req.url}}  {{res.statusCode}} {{res.responseTime}}ms',
   colorize: false
 }))
 
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(authorization.config(container.resolve(TokenService), {
+  whitelist: [
+    exclude('POST', '/api/user/login'),
+    exclude('POST', '/api/user/register')
+  ]
+}))
+
+app.use('/', express.static(path.join(__dirname, 'public')))
 app.use(enrouten({
   directory: 'src/routes'
 }))

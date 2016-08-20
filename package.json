@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon index.js",
     "test": "mocha test/routes/*.test.js test/unit/*.test.js --reporter spec",
-    "devtest": "mocha test/routes/*.test.js test/unit/*.test.js --reporter nyan --ui bdd --watch"
+    "test:watch": "mocha test/routes/*.test.js test/unit/*.test.js --reporter nyan --ui bdd --watch"
   },
   "repository": {
     "type": "git",
@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "chai": "^3.5.0",
+    "chai-spies": "^0.7.1",
     "mocha": "^3.0.2",
     "nodemon": "^1.10.0",
     "supertest": "^2.0.0"

@@ -15,10 +15,12 @@ npm install
 
 ```bash
 npm test
+npm run test:watch
 ```
 
 ### Running
 ```bash
+docker-compose up
 npm run
 ```
 ## License

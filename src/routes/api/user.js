@@ -10,7 +10,6 @@ module.exports = router => {
 
   router.post('/register', (req, res) => {
     const user = req.body
-    console.log(user)
     registrationService.registerUser(user, (err, data) => {
       if (err) {
         return res.send({
