@@ -38,12 +38,12 @@ app.use(expressWinston.logger({
       colorize: true
     })
   ],
-  meta: false,
-  msg: 'HTTP {{req.method}} {{req.url}} {{res.responseTime}}ms {{res.statusCode}}',
+  meta: true,
+  msg: 'HTTP {{req.method}} {{req.url}}  {{res.statusCode}} {{res.responseTime}}ms',
   colorize: false
 }))
 
-app.use(authorization.config({
+app.use(authorization.config(container.resolve(TokenService), {
   whitelist: [
     exclude('POST', '/api/user/login'),
     exclude('POST', '/api/user/register')

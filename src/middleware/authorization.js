@@ -18,7 +18,7 @@ function config (tokenService, options) {
 
   function authFailure (res) {
     winston.log('info', 'authorization failure')
-    res.status(401)
+    res.status(401).send('invalid token')
   }
 
   return (req, res, next) => {

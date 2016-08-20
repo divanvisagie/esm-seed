@@ -19,7 +19,11 @@ describe('authorization middleware constructor', () => {
       const responseMock = {
         status (statusCode) {
           statusCode.should.equal(401)
-          done()
+          return {
+            send (message) {
+              done()
+            }
+          }
         }
       }
       authorization.config()(mockRequest, responseMock, nextMock)
