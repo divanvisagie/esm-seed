@@ -1,14 +1,10 @@
 'use strict'
 
-const container = require('../../container')
-const RegistrationService = require('../../services/registration-service')
-const LoginService = require('../../services/login-service')
+module.exports = (app, options) => {
+  const { registrationService, loginService } = options
+  const root = '/api/user'
 
-module.exports = router => {
-  const registrationService = container.resolve(RegistrationService)
-  const loginService = container.resolve(LoginService)
-
-  router.post('/register', (req, res) => {
+  app.post(`${root}/register`, (req, res) => {
     const user = req.body
     registrationService.registerUser(user, (err, data) => {
       if (err) {
@@ -22,7 +18,7 @@ module.exports = router => {
     })
   })
 
-  router.post('/login', (req, res) => {
+  app.post(`${root}/login`, (req, res) => {
     const user = req.body
     loginService.login(user, (err, data) => {
       if (err) {

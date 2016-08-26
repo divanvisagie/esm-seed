@@ -1,22 +1,15 @@
-/* global describe, it, beforeEach, afterEach */
+/* global describe, it, beforeEach */
 'use strict'
-const container = require('../../src/container')
-const TokenConfig = require('../../src/config/token-config')
+const createTokenConfig = require('../../src/config/token-config')
 const TokenService = require('../../src/services/token-service')
 require('chai').should()
 
 describe('Token service', () => {
+  const tokenConfig = createTokenConfig()
   let tokenService
 
   beforeEach(done => {
-    container.add(TokenConfig)
-    container.add(TokenService)
-    tokenService = container.resolve(TokenService)
-    done()
-  })
-
-  afterEach(done => {
-    container.destroy()
+    tokenService = TokenService(tokenConfig)
     done()
   })
 
@@ -25,7 +18,7 @@ describe('Token service', () => {
   }
   describe('tokenService', () => {
     it('should initialize', () => {
-      let tokenService = container.resolve(TokenService)
+      let tokenService = TokenService(tokenConfig)
       tokenService.should.not.equal(undefined)
     })
   })
@@ -44,7 +37,7 @@ describe('Token service', () => {
 
   describe('given token for bob', () => {
     it('should deserialize to { bob }', done => {
-      const tokenService = container.resolve(TokenService)
+      const tokenService = TokenService(tokenConfig)
       const user = {
         username: 'bob'
       }

@@ -4,7 +4,8 @@
 
 const express = require('express')
 const supertest = require('supertest')
-const enrouten = require('express-enrouten')
+const pingRoute = require('../../src/routes/ping')
+const pingService = require('../../src/services/ping-service')()
 
 describe(`ping`, () => {
   let app, api, mock
@@ -13,10 +14,11 @@ describe(`ping`, () => {
   beforeEach(done => {
     app = express()
     app.on('start', done)
-    app.use(enrouten({
-      directory: '../../src/routes'
-    }))
     mock = app.listen('1337')
+
+    pingRoute(app, {
+      pingService
+    })
 
     api = supertest(url)
     done()

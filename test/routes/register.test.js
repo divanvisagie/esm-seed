@@ -4,9 +4,7 @@
 
 const express = require('express')
 const supertest = require('supertest')
-const enrouten = require('express-enrouten')
-const RegistrationService = require('../../src/services/registration-service')
-const container = require('../../src/container')
+const userRoute = require('../../src/routes/user')
 
 const mockRegistrationService = {
   registerUser (user, callback) {
@@ -21,18 +19,18 @@ describe(`register`, () => {
   beforeEach(done => {
     app = express()
     app.on('start', done)
-    container.add(RegistrationService, () => mockRegistrationService)
-    app.use(enrouten({
-      directory: '../../src/routes'
-    }))
+
     mock = app.listen('1337')
+
+    userRoute(app, {
+      registrationService: mockRegistrationService
+    })
 
     api = supertest(url)
     done()
   })
 
   afterEach(done => {
-    container.destroy()
     mock.close()
     done()
   })
